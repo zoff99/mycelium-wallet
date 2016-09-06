@@ -89,15 +89,11 @@ dependencies:
 
 
     - gradle tasks
-    - exit 1
-
-
-
-
-
     #- git submodule init
     #- git submodule update
-    - ./gradlew assemble --stacktrace --info --no-daemon
+    - ./gradlew assembleProdnetRelease --stacktrace --info --no-daemon
+
+
 
     - find . -name '*.apk' ; exit 0
 
