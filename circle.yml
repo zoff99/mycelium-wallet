@@ -91,7 +91,7 @@ dependencies:
     - gradle tasks
     #- git submodule init
     #- git submodule update
-    - ./gradlew assembleProdnetRelease --stacktrace --info --no-daemon
+    - ./gradlew :public:mbw:assembleProdnetRelease --stacktrace --info --no-daemon
 
 
 
