@@ -80,26 +80,22 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter extra-google-google_play_services_froyo > /dev/null 2> /dev/null
     - echo y | android update sdk --no-ui --all --filter extra-google-gcm > /dev/null 2> /dev/null
 
+    - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-21 > /dev/null 2> /dev/null
     - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-23 > /dev/null 2> /dev/null
+    - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-android-24 > /dev/null 2> /dev/null
+
     - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-addon-google_apis-google-23 > /dev/null 2> /dev/null
     - echo y | android update sdk --no-ui --all --filter addon-google_apis-google-23 > /dev/null 2> /dev/null
 
     - pwd ; ls -al
 
-
-
-    - ./gradlew tasks ; exit 0
-    - ./gradlew tasks --all ; exit 0
-    #- git submodule init
-    #- git submodule update
     - ./gradlew :public:mbw:assembleProdnetRelease --stacktrace --info --no-daemon
-
-
-
     - find . -name '*.apk' ; exit 0
 
-    - mkdir -p app/build/outputs/apk/
-    - cp -v ./public/mbw/build/outputs/apk/mbw-prodnet-release-unsigned-2.8.4build28406.apk app/build/outputs/apk/app-debug-unaligned.apk
+# --- copy apk file to generic location ---
+    - mkdir -p ./app/build/outputs/apk/
+    - if [ ! -e ./app/build/outputs/apk/app-debug-unaligned.apk ]; then cp -v `find ./ -name '*.apk' 2> /dev/null | tail -1 2> /dev/null` ./app/build/outputs/apk/app-debug-unaligned.apk ; fi
+# --- copy apk file to generic location ---
 
     - zip -d app/build/outputs/apk/app-debug-unaligned.apk META-INF/\*     # remove signature !!
     - cp -av app/build/outputs/apk/app-debug-unaligned.apk ~/app.apk ;
@@ -118,7 +114,17 @@ dependencies:
       ls -al ~/ ;
       pwd ;
       ls -al ;
-      cp -av app-signed-aligned.apk $CIRCLE_ARTIFACTS/mycelium_$CIRCLE_SHA1.apk || exit 1
+      cp -av app-signed-aligned.apk $CIRCLE_ARTIFACTS/${CIRCLE_PROJECT_REPONAME}.apk || exit 1
+
+
+##   also make apk files with different names for each build (for individual downloads)
+    - cp -av $CIRCLE_ARTIFACTS/${CIRCLE_PROJECT_REPONAME}.apk $CIRCLE_ARTIFACTS/${CIRCLE_PROJECT_REPONAME}_circleci_$CIRCLE_SHA1.apk ; exit 0
+##   qr code to scan with your phone to directly download the apk file (for convenience)
+    - qrencode -o $CIRCLE_ARTIFACTS/QR_apk.png 'https://circle-artifacts.com/gh/'${CIRCLE_PROJECT_USERNAME}'/'${CIRCLE_PROJECT_REPONAME}'/'${CIRCLE_BUILD_NUM}'/artifacts/'${CIRCLE_NODE_INDEX}'/tmp/'`basename $CIRCLE_ARTIFACTS`'/'"${CIRCLE_PROJECT_REPONAME}_circleci_$CIRCLE_SHA1.apk" ; exit 0
+##   qr code to go directly to the aritfacts (to scan with phone)
+    - qrencode -o $CIRCLE_ARTIFACTS/QR_artifacts.png 'https://circleci.com/gh/'${CIRCLE_PROJECT_USERNAME}'/'${CIRCLE_PROJECT_REPONAME}'/'${CIRCLE_BUILD_NUM}'#artifacts' ; exit 0
+
+
 test:
   pre:
     - mksdcard -l e 180M sdcard.img
