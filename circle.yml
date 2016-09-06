@@ -93,7 +93,7 @@ dependencies:
     - find . -name '*.apk' ; exit 0
 
     - mkdir -p app/build/outputs/apk/
-    - cp -v ./build/outputs/apk/Silence-debug-unaligned.apk app/build/outputs/apk/app-debug-unaligned.apk
+    - cp -v ./public/mbw/build/outputs/apk/mbw-prodnet-release-unsigned-2.8.4build28406.apk app/build/outputs/apk/app-debug-unaligned.apk
 
     - zip -d app/build/outputs/apk/app-debug-unaligned.apk META-INF/\*     # remove signature !!
     - cp -av app/build/outputs/apk/app-debug-unaligned.apk ~/app.apk ;
