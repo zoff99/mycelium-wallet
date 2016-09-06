@@ -88,7 +88,7 @@ dependencies:
 
     #- git submodule init
     #- git submodule update
-    - ./gradlew assembleRelease --stacktrace --info --no-daemon
+    - ./gradlew assemble --stacktrace --info --no-daemon
 
     - find . -name '*.apk' ; exit 0
 
