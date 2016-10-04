@@ -54,8 +54,8 @@ def commonDebugKeystore = rootProject.file('keystore_debug')
 android {
 
     dexOptions {
-        javaMaxHeapSize "4g"
-        jumboMode = true
+        javaMaxHeapSize "1.6g"
+        // jumboMode = true
     }
 
     packagingOptions {
