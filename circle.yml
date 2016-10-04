@@ -11,7 +11,7 @@ machine:
     ANDROID_HOME: /usr/local/android-sdk-linux
     ANDROID_SDK: /usr/local/android-sdk-linux/
     _SDK_: /usr/local/android-sdk-linux/
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1000m -XX:+HeapDumpOnOutOfMemoryError"'
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1500m -XX:+HeapDumpOnOutOfMemoryError"'
     GRADLE_HOME: ~/g/gradle-2.10
     PATH: ~/g/gradle-2.10/bin:$PATH
 
@@ -61,6 +61,7 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.1
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.3
+    - echo y | android update sdk --no-ui --all --filter build-tools-23.0.4
 
     - echo y | android update sdk --no-ui --all --filter build-tools-22.0.0
     - echo y | android update sdk --no-ui --all --filter build-tools-22.0.1
@@ -92,7 +93,7 @@ dependencies:
 
     - pwd ; ls -al
 
-    - ./gradlew :public:mbw:assembleProdnetRelease --stacktrace --info --no-daemon
+    - ./gradlew :public:mbw:assembleProdnetRelease --stacktrace --info --no-daemon -x lint
     - find . -name '*.apk' ; exit 0
 
 # --- copy apk file to generic location ---
